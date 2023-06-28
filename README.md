@@ -1,5 +1,7 @@
 # PlutoniumLib
-Main library for all Plutonium Studio projects
+Main library for all Plutonium Studio roblox projects
+
+Roblox page [here](https://www.roblox.com/library/13882575468/PlutoniumLib)
 
 
 # Documentation
