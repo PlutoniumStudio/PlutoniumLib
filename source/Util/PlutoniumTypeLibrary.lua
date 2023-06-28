@@ -21,7 +21,7 @@ export type PrimerData = {
 	TracerPool: InstancePool?,
 	MaxDistance: number,
 	UserData: {any},
-	VisualizeCasts: boolean,
+	Visualize: boolean,
 	PierceFunction: any,
 }
 
