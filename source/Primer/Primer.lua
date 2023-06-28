@@ -31,6 +31,7 @@ function Primer.newDataPacket() : PrimerData
 		TracerPool = nil;
 		MaxDistance = 300;
 		UserData = {};
+		VisualizeCasts = false;
 		PierceFunction = function() return false end;
 	}
 end
