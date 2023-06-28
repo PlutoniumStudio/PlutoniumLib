@@ -49,54 +49,54 @@ end
 
 
 
-## <sup>module</sup> KwikKast
+## <sup>module</sup> Primer
 
 **Functions**
-- `KwikKast.new` <sub>KwikKaster</sub> - creates a *KwikKaster* object
-- `KwikKast.newDataPacket` <sub>KwikKaster</sub> - creates a *KwikData* object
+- `Primer.new` <sub>Caster</sub> - creates a *Caster* object
+- `Primer.newDataPacket` <sub>PrimerData</sub> - creates a *PrimerData* object
 
-### <sup>class</sup> `KwikKaster`
+### <sup>class</sup> `Caster`
 
 **Properties**
-- <sup>RBXScriptSignal</sup> `KastUpdated` - called when *KastInstance* updates `(kast : KastInstance, lastPosition : Vector3, direction : Vector3, displacement : number, velocity : Vector3, tracer : Instance)`
-- <sup>RBXScriptSignal</sup> `RayHit` - called when *KastInstance* hits a surface `(kast : KastInstance, result : RaycastResult, velocity : Vector3, tracer : Instance)`
-- <sup>RBXScriptSignal</sup> `RayPierced` - called when *KastInstance* penetrates a surface `(kast : KastInstance, result : RaycastResult, velocity : Vector3, tracer : Instance)`
-- <sup>RBXScriptSignal</sup> `KastStopping` - called when *KastInstance* prepares to be terminated `(kast : KastInstance)`
+- <sup>RBXScriptSignal</sup> `CastUpdated` - called when *CastInstance* updates `(cast : CastInstance, lastPosition : Vector3, direction : Vector3, displacement : number, velocity : Vector3, tracer : Instance)`
+- <sup>RBXScriptSignal</sup> `RayHit` - called when *CastInstance* hits a surface `(cast : CastInstance, result : RaycastResult, velocity : Vector3, tracer : Instance)`
+- <sup>RBXScriptSignal</sup> `RayPierced` - called when *CastInstance* penetrates a surface `(cast : CastInstance, result : RaycastResult, velocity : Vector3, tracer : Instance)`
+- <sup>RBXScriptSignal</sup> `CastStopping` - called when *CastInstance* prepares to be terminated `(cast : CastInstance)`
 
 **Functions**
-- `Fire(origin : Vector3, direction : Vector3, velocity : number, kwikDataPacket : kwikData)` <sub>KastInstance</sub> - creates and runs a new *KastInstance*
+- `Fire(origin : Vector3, direction : Vector3, velocity : number, primerDataPacket : primerData)` <sub>CastInstance</sub> - creates and runs a new *CastInstance*
 
-### <sup>class</sup> `KwikData`
-
-**Properties**
-- <sup>RaycastParams</sup> `RaycastParams` - RaycastParams carried to each *KastInstance*
-- <sup>Vector3</sup> `Acceleration` - acceleration of each *KastInstance*
-- <sup>number</sup> `SimulationSpeed` - how fast the game will simulate each *KastInstance* (1 being normal speed)
-- <sup>InstancePool</sup> `TracerPool` - *InstancePool* of which will be used for each *KastInstance*'s tracer
-- <sup>number</sup> `MaxDistance` - how far each *KastInstance* may go before it must be terminated
-- <sup>{any}</sup> `UserData` - information passed by the user to every *KastInstance*
-
-### <sup>class</sup> `KastInstance`
+### <sup>class</sup> `PrimerData`
 
 **Properties**
-- <sup>KwikKaster</sup> `Kaster` - *KwikKaster* object that fired *KastInstance*
-- <sup>number</sup> `SimulationSpeed` - how fast the game will simulate *KastInstance* (inherited from *KwikData*)
-- <sup>Vector3</sup> `Position` - current position of *KastInstance*
-- <sup>Vector3</sup> `Velocity` - current velocity of *KastInstance*
-- <sup>number</sup> `KastId` - unique ID assigned to *KastInstance*
-- <sup>number</sup> `MaxDistance` - how far *KastInstance* may go before it is terminated (inherited from *KwikData*)
-- <sup>number</sup> `Distance` - how far *KastInstance* has already travelled
-- <sup>{KwikTrajectory}</sup> `Trajectories` - table containing precalculated math for the motion paths of the *KastInstance*
-- <sup>Instance</sup> `Tracer` - cosmetic bullet object for *KastInstance*
-- <sup>InstancePool</sup> `TracerPool` - *InstancePool* being used by *KastInstance* (inherited from *KwikData*)
-- <sup>RaycastParams</sup> `RaycastParams` - RaycastParams used by *KastInstance* (inherited from *KwikData*)
-- <sup>function</sup> `PierceFunction` - function that returns a boolean value for whether or not *KastInstance* is able to pierce a surface
-- <sup>{any}</sup> `UserData` - user-provided information contained in *KastInstance* that can be changed and read from at any moment (inherited from *KwikData*)
-- <sup>boolean</sup> `Active` - *KastInstance*'s current state of activity; will read false momentarily before *KastInstance* is terminated
+- <sup>RaycastParams</sup> `RaycastParams` - RaycastParams carried to each *CastInstance*
+- <sup>Vector3</sup> `Acceleration` - acceleration of each *CastInstance*
+- <sup>number</sup> `SimulationSpeed` - how fast the game will simulate each *CastInstance* (1 being normal speed)
+- <sup>InstancePool</sup> `TracerPool` - *InstancePool* of which will be used for each *CastInstance*'s tracer
+- <sup>number</sup> `MaxDistance` - how far each *CastInstance* may go before it must be terminated
+- <sup>{any}</sup> `UserData` - information passed by the user to every *CastInstance*
+
+### <sup>class</sup> `CastInstance`
+
+**Properties**
+- <sup>PrimerCaster</sup> `Caster` - *PrimerCaster* object that fired *CastInstance*
+- <sup>number</sup> `SimulationSpeed` - how fast the game will simulate *CastInstance* (inherited from *PrimerData*)
+- <sup>Vector3</sup> `Position` - current position of *CastInstance*
+- <sup>Vector3</sup> `Velocity` - current velocity of *CastInstance*
+- <sup>number</sup> `CastId` - unique ID assigned to *CastInstance*
+- <sup>number</sup> `MaxDistance` - how far *CastInstance* may go before it is terminated (inherited from *PrimerData*)
+- <sup>number</sup> `Distance` - how far *CastInstance* has already travelled
+- <sup>{PrimerTrajectory}</sup> `Trajectories` - table containing precalculated math for the motion paths of the *CastInstance*
+- <sup>Instance</sup> `Tracer` - cosmetic bullet object for *CastInstance*
+- <sup>InstancePool</sup> `TracerPool` - *InstancePool* being used by *CastInstance* (inherited from *PrimerData*)
+- <sup>RaycastParams</sup> `RaycastParams` - RaycastParams used by *CastInstance* (inherited from *PrimerData*)
+- <sup>function</sup> `PierceFunction` - function that returns a boolean value for whether or not *CastInstance* is able to pierce a surface
+- <sup>{any}</sup> `UserData` - user-provided information contained in *CastInstance* that can be changed and read from at any moment (inherited from *PrimerData*)
+- <sup>boolean</sup> `Active` - *CastInstance*'s current state of activity; will read false momentarily before *CastInstance* is terminated
 
 **Functions**
-- `EditTrajectory(position : Vector3, velocity : Vector3, acceleration : Vector3)` - modifies the trajectory of *KastInstance*; nil accepted for all parameters
-- `Terminate()` - sets `Active` property of *KastInstance* to false
+- `EditTrajectory(position : Vector3, velocity : Vector3, acceleration : Vector3)` - modifies the trajectory of *CastInstance*; nil accepted for all parameters
+- `Terminate()` - sets `Active` property of *CastInstance* to false
 
 **Code Example**
 
@@ -113,42 +113,42 @@ Tracer.Mesh.MeshType = Enum.MeshType.Sphere
 local Container = Instance.new("Folder")
 Container.Parent = game.Workspace
 
-local Kaster = KwikKast.new()
+local Caster = Primer.new()
 
-local KwikData = KwikKast.newDataPacket()
-KwikData.RaycastParams.FilterDescendantsInstances = {Container}
-KwikData.Acceleration = Vector3.new(0, -196.2)
-KwikData.TracerPool = PartPool.new(Tracer, 100, Container)
-KwikData.SimulationSpeed = 1
+local PrimerData = Primer.newDataPacket()
+PrimerData.RaycastParams.FilterDescendantsInstances = {Container}
+PrimerData.Acceleration = Vector3.new(0, -196.2)
+PrimerData.TracerPool = PartPool.new(Tracer, 100, Container)
+PrimerData.SimulationSpeed = 1
 
 local Camera = game.Workspace.CurrentCamera
 
-Kaster.KastUpdated:Connect(function(kast, point, direction, length, velocity, bullet)
-	if kast.UserData.LCP == nil then
-		kast.UserData.LCP = CFrame.new(
+Caster.CastUpdated:Connect(function(cast, point, direction, length, velocity, bullet)
+	if cast.UserData.LCP == nil then
+		cast.UserData.LCP = CFrame.new(
 			Camera.CFrame.RightVector:Dot(point-Camera.CFrame.Position),
 			Camera.CFrame.UpVector:Dot(point-Camera.CFrame.Position),
 			-Camera.CFrame.LookVector:Dot(point-Camera.CFrame.Position)
 		)
 	end
 
-	local p0 = (Camera.CFrame*kast.UserData.LCP).Position
+	local p0 = (Camera.CFrame*cast.UserData.LCP).Position
 	local p1 = point+direction*length
 
 	local disp = (p1-p0)
 
 	bullet.CFrame = CFrame.new(p0+disp/2, p1)
 	bullet.Size = Vector3.new(0.1, 0.1, disp.Magnitude)
-	kast.UserData.LCP = CFrame.new(
+	cast.UserData.LCP = CFrame.new(
 		Camera.CFrame.RightVector:Dot(p1-Camera.CFrame.Position),
 		Camera.CFrame.UpVector:Dot(p1-Camera.CFrame.Position),
 		-Camera.CFrame.LookVector:Dot(p1-Camera.CFrame.Position)
 	)
 end)
 
-Kaster.RayHit:Connect(function(kast, result)
+Caster.RayHit:Connect(function(cast, result)
 	print(result.Instance.Name)
 end)
 
-Kaster:Fire(Vector3.new(0, 5, 0), Vector3.new(0, math.random(), math.random()), 800, self.KwikData)
+Caster:Fire(Vector3.new(0, 5, 0), Vector3.new(0, math.random(), math.random()), 800, self.PrimerData)
 ```
