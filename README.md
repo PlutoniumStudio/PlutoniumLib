@@ -30,11 +30,11 @@ Roblox page [here](https://www.roblox.com/library/13882575468/PlutoniumLib)
 ```lua
 local PartPool = require(PlutoniumLib.PartPool)
 
-local part = Instance.new("Part")
-part.Anchored = true
+local Part = Instance.new("Part")
+Part.Anchored = true
 
-local container = Instance.new("Folder")
-container.Parent = game.Workspace
+local Container = Instance.new("Folder")
+Container.Parent = game.Workspace
 
 local newPool = PartPool.new(part, 100, container)
 
@@ -97,3 +97,58 @@ end
 **Functions**
 - `EditTrajectory(position : Vector3, velocity : Vector3, acceleration : Vector3)` - modifies the trajectory of *KastInstance*; nil accepted for all parameters
 - `Terminate()` - sets `Active` property of *KastInstance* to false
+
+**Code Example**
+
+```lua
+local Tracer = Instance.new("Part")
+Tracer.Color = Color3.new(1, 0.5, 0.3)
+Tracer.Material = Enum.Material.Neon
+Tracer.Anchored = true
+Tracer.CanCollide = false
+Tracer.Size = Vector3.new(0.1, 0.1, 0.1)
+Instance.new("SpecialMesh").Parent = Tracer
+Tracer.Mesh.MeshType = Enum.MeshType.Sphere
+
+local Container = Instance.new("Folder")
+Container.Parent = game.Workspace
+
+local Kaster = KwikKast.new()
+
+local KwikData = KwikKast.newDataPacket()
+KwikData.RaycastParams.FilterDescendantsInstances = {Container}
+KwikData.Acceleration = Vector3.new(0, -196.2)
+KwikData.TracerPool = PartPool.new(Tracer, 100, Container)
+KwikData.SimulationSpeed = 1
+
+local Camera = game.Workspace.CurrentCamera
+
+Kaster.KastUpdated:Connect(function(kast, point, direction, length, velocity, bullet)
+	if kast.UserData.LCP == nil then
+		kast.UserData.LCP = CFrame.new(
+			Camera.CFrame.RightVector:Dot(point-Camera.CFrame.Position),
+			Camera.CFrame.UpVector:Dot(point-Camera.CFrame.Position),
+			-Camera.CFrame.LookVector:Dot(point-Camera.CFrame.Position)
+		)
+	end
+
+	local p0 = (Camera.CFrame*kast.UserData.LCP).Position
+	local p1 = point+direction*length
+
+	local disp = (p1-p0)
+
+	bullet.CFrame = CFrame.new(p0+disp/2, p1)
+	bullet.Size = Vector3.new(0.1, 0.1, disp.Magnitude)
+	kast.UserData.LCP = CFrame.new(
+		Camera.CFrame.RightVector:Dot(p1-Camera.CFrame.Position),
+		Camera.CFrame.UpVector:Dot(p1-Camera.CFrame.Position),
+		-Camera.CFrame.LookVector:Dot(p1-Camera.CFrame.Position)
+	)
+end)
+
+Kaster.RayHit:Connect(function(kast, result)
+	print(result.Instance.Name)
+end)
+
+Kaster:Fire(Vector3.new(0, 5, 0), Vector3.new(0, math.random(), math.random()), 800, self.KwikData)
+```
