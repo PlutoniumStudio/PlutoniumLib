@@ -61,7 +61,7 @@ end
 - <sup>RBXScriptSignal</sup> `KastUpdated` - called when *KastInstance* updates `(kast : KastInstance, lastPosition : Vector3, direction : Vector3, displacement : number, velocity : Vector3, tracer : Instance)`
 - <sup>RBXScriptSignal</sup> `RayHit` - called when *KastInstance* hits a surface `(kast : KastInstance, result : RaycastResult, velocity : Vector3, tracer : Instance)`
 - <sup>RBXScriptSignal</sup> `RayPierced` - called when *KastInstance* penetrates a surface `(kast : KastInstance, result : RaycastResult, velocity : Vector3, tracer : Instance)`
-- <sup>RBXScriptSignal</sup> `KastStopping` - called when *KastInstance* prepares to be terminated `(kast : KastInstance, tracer : Instance)`
+- <sup>RBXScriptSignal</sup> `KastStopping` - called when *KastInstance* prepares to be terminated `(kast : KastInstance)`
 
 **Functions**
 - `Fire(origin : Vector3, direction : Vector3, velocity : number, kwikDataPacket : kwikData)` <sub>KastInstance</sub> - creates and runs a new *KastInstance*
