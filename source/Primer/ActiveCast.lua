@@ -56,7 +56,7 @@ function ActiveCast.new(caster : Caster, origin, direction, velocity, primerData
 end
 
 local function GetPositionAtTime(time : number, origin : Vector3, initialVelocity : Vector3, acceleration : Vector3)
-	local force = Vector3.new(acceleration.X*time^2, acceleration.Y*time^2, acceleration.Z*time^2)
+	local force = acceleration * time^2
 	return origin + initialVelocity * time + force
 end
 
