@@ -8,10 +8,14 @@ Roblox page [here](https://www.roblox.com/library/13882575468/PlutoniumLib)
 
 ## <sup>module</sup> PartPool
 
+PartPool intends to minimize lag with large loads of parts by means of recycling them. Unused parts are not reparented or deleted, but instead repositioned far outside rendering view to be used again.
+
 **Functions**
 - `PartPool.new(template : Instance, precreatedParts : number, container : Instance)` <sub>InstancePool</sub> - creates an *InstancePool* object
 
 ### <sup>class</sup> `InstancePool`
+
+Object containing your parts and basic **PartPool** functions
 
 **Properties**
 - <sup>Instance</sup> `Template` - part being replicated and used by *InstancePool*
@@ -51,11 +55,15 @@ end
 
 ## <sup>module</sup> Primer
 
+Primer can create fast, realistic projectiles for your FPS game.
+
 **Functions**
-- `Primer.new` <sub>Caster</sub> - creates a *Caster* object
-- `Primer.newDataPacket` <sub>PrimerData</sub> - creates a *PrimerData* object
+- `Primer.new()` <sub>Caster</sub> - creates a *Caster* object
+- `Primer.newDataPacket()` <sub>PrimerData</sub> - creates a *PrimerData* object
 
 ### <sup>class</sup> `Caster`
+
+Object used to cast projectiles and connect functions to cast signals
 
 **Properties**
 - <sup>RBXScriptSignal</sup> `CastUpdated` - called when *CastInstance* updates `(cast : CastInstance, lastPosition : Vector3, direction : Vector3, displacement : number, velocity : Vector3, tracer : Instance)`
@@ -68,6 +76,8 @@ end
 
 ### <sup>class</sup> `PrimerData`
 
+Table of data governing projectiles casted with **Primer**
+
 **Properties**
 - <sup>RaycastParams</sup> `RaycastParams` - RaycastParams carried to each *CastInstance*
 - <sup>Vector3</sup> `Acceleration` - acceleration of each *CastInstance*
@@ -77,6 +87,8 @@ end
 - <sup>{any}</sup> `UserData` - information passed by the user to every *CastInstance*
 
 ### <sup>class</sup> `CastInstance`
+
+Object to represent a projectile.
 
 **Properties**
 - <sup>PrimerCaster</sup> `Caster` - *PrimerCaster* object that fired *CastInstance*
@@ -152,3 +164,27 @@ end)
 
 Caster:Fire(Vector3.new(0, 5, 0), Vector3.new(0, math.random(), math.random()), 800, self.PrimerData)
 ```
+
+## <sup>module</sup> Loom
+
+A module designed to record tables and dictionaries inside Roblox Datastores by converting them to strings.
+
+**Functions**
+- `Loom.new(name : string, type : LoomType)`<sub>LoomInstance</sub> - creates a *LoomInstance*
+
+### <sup>type</sup> `LoomType`
+
+Value of either "REGULAR" or "DICTIONARY"
+
+### <sup>class</sup> `LoomInstance`
+
+Object carrying a DataStore and all **Loom** functions
+
+**Properties**
+- <sup>string</sup> `Name` - name of *LoomInstance*
+- <sup>DataStore</sup> `Name` - DataStore attached to *LoomInstance*
+- <sup>LoomType</sup> `Type` - type of table stored using *LoomInstance*
+
+**Functions**
+- `Save(key : any, data : {any})` - saves a table using *LoomInstance*
+- `Export(key : any)` <sub>{any}</sub> - extracts data from *LoomInstance*
