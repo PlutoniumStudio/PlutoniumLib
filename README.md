@@ -84,6 +84,7 @@ Table of data governing projectiles casted with **Primer**
 - <sup>number</sup> `SimulationSpeed` - how fast the game will simulate each *CastInstance* (1 being normal speed)
 - <sup>InstancePool</sup> `TracerPool` - *InstancePool* of which will be used for each *CastInstance*'s tracer
 - <sup>number</sup> `MaxDistance` - how far each *CastInstance* may go before it must be terminated
+- <sup>boolean</sup> `VisualizeCasts` - visualize the trajectory of each *CastInstance*
 - <sup>{any}</sup> `UserData` - information passed by the user to every *CastInstance*
 
 ### <sup>class</sup> `CastInstance`
@@ -102,6 +103,7 @@ Object to represent a projectile.
 - <sup>Instance</sup> `Tracer` - cosmetic bullet object for *CastInstance*
 - <sup>InstancePool</sup> `TracerPool` - *InstancePool* being used by *CastInstance* (inherited from *PrimerData*)
 - <sup>RaycastParams</sup> `RaycastParams` - RaycastParams used by *CastInstance* (inherited from *PrimerData*)
+- <sup>boolean</sup> `Visualize` - visualize the trajectory of *CastInstance* (inherited from *PrimerData*)
 - <sup>function</sup> `PierceFunction` - function that returns a boolean value for whether or not *CastInstance* is able to pierce a surface
 - <sup>{any}</sup> `UserData` - user-provided information contained in *CastInstance* that can be changed and read from at any moment (inherited from *PrimerData*)
 - <sup>boolean</sup> `Active` - *CastInstance*'s current state of activity; will read false momentarily before *CastInstance* is terminated
