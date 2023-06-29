@@ -1,5 +1,5 @@
-local PartPool = {}
-PartPool.__index = PartPool
+local Composter = {}
+Composter.__index = Composter
 
 local util = script.Parent.Util
 
@@ -7,7 +7,7 @@ local TypeLib = require(util.PlutoniumTypeLibrary)
 
 type InstancePool = TypeLib.InstancePool
 
-function PartPool.new(template : Instance, precreatedParts : number, container : Instance) : InstancePool
+function Composter.new(template : Instance, precreatedParts : number, container : Instance) : InstancePool
 	local Pool = {
 		Template = template;
 		InUse = {};
@@ -23,10 +23,10 @@ function PartPool.new(template : Instance, precreatedParts : number, container :
 		table.insert(Pool.Available, Duplicate)
 	end
 
-	return setmetatable(Pool, PartPool)
+	return setmetatable(Pool, Composter)
 end
 
-function PartPool:GetPart(index : number)
+function Composter:GetPart(index : number)
 	if #self.Available < 1 then
 		for i = 1, self.ExpansionSize do
 			local Duplicate = self.Template:Clone()
@@ -43,13 +43,13 @@ function PartPool:GetPart(index : number)
 return Part
 end
 
-function PartPool:ReturnPart(part : Instance)
+function Composter:ReturnPart(part : Instance)
 	part.CFrame = CFrame.new(0, 1*10^8, 0)
 	table.remove(self.InUse, table.find(self.InUse, part))
 	table.insert(self.Available, part)
 end
 
-function PartPool:Clear()
+function Composter:Clear()
 	for i, v in pairs(self.InUse) do
 		v.CFrame = CFrame.new(0, 1*10^8, 0)
 		table.insert(self.Available, v)
@@ -58,7 +58,7 @@ function PartPool:Clear()
 	self.InUse = {}
 end
 
-function PartPool:Remove()
+function Composter:Remove()
 	for i, v in pairs(self.InUse) do
 		v:Destroy()
 	end
@@ -71,4 +71,4 @@ function PartPool:Remove()
 	self = nil
 end
 
-return PartPool
+return Composter
