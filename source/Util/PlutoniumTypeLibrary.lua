@@ -21,7 +21,8 @@ export type PrimerData = {
 	TracerPool: InstancePool?,
 	MaxDistance: number,
 	UserData: {any},
-	Visualize: boolean,
+	VisualizeCasts: boolean,
+	IgnorePiercedPars: boolean,
 	PierceFunction: any,
 }
 
@@ -40,7 +41,8 @@ export type CastInstance = {
 	Tracer: nil;
 	PartPool: InstancePool,
 	RaycastParams: RaycastParams,
-	VisualizeCasts: boolean,
+	Visualize: boolean,
+	IgnorePiercedPars: boolean,
 	PierceFunction: (CastInstance, RaycastResult, Vector3, Vector3) -> boolean,
 	
 	UserData: {any},
