@@ -32,6 +32,7 @@ function Primer.newDataPacket() : PrimerData
 		MaxDistance = 300;
 		UserData = {};
 		VisualizeCasts = false;
+		IgnorePiercedParts = true;
 		PierceFunction = function() return false end;
 	}
 end
