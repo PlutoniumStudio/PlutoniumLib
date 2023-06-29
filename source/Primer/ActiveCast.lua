@@ -38,8 +38,9 @@ function ActiveCast.new(caster : Caster, origin, direction, velocity, primerData
 		PartPool = primerDataPacket.TracerPool;
 		RaycastParams = primerDataPacket.RaycastParams;
 		Visualize = primerDataPacket.VisualizeCasts;
+		IgnorePiercedParts = primerDataPacket.IgnorePiercedParts;
 		PierceFunction = primerDataPacket.PierceFunction;
-		
+
 
 		UserData = copyTable(primerDataPacket.UserData);
 
@@ -71,8 +72,8 @@ local function VisualizeSegment(segmentCFrame : CFrame, segmentLength : number)
 	adornment.Length = segmentLength
 	adornment.Color3 = Color3.new(1)
 	adornment.Thickness = 5
-	adornment.Parent = game.Workspace
-	
+	adornment.Parent = workspace.Terrain
+
 	game.Debris:AddItem(adornment, 60)
 end
 
@@ -82,7 +83,7 @@ local function VisualizeHit(position : Vector3, pierced : boolean)
 	adornment.CFrame = CFrame.new(position)
 	adornment.Radius = 0.5
 	adornment.Color3 = (pierced == false) and Color3.new(0, 0.333333, 1) or Color3.new(0, 1, 0)
-	adornment.Parent = game.Workspace
+	adornment.Parent = workspace.Terrain
 
 	game.Debris:AddItem(adornment, 60)
 end
@@ -127,34 +128,37 @@ if RunService:IsClient() then
 					currentTrajectory.InitialVelocity,
 					currentTrajectory.Acceleration
 				)
-				
-				local result = game.Workspace:Raycast(castObject.Position, P-castObject.Position, castObject.RaycastParams)
 
+				local result = game.Workspace:Raycast(castObject.Position, P-castObject.Position, castObject.RaycastParams)
+				
 				if result then
 					local pierced = castObject.PierceFunction(castObject, result, P, V)
 					P = result.Position
 
 					if pierced then
 						castObject.Caster.RayPierced:Fire(castObject, result)
+						if castObject.IgnorePiercedParts and castObject.RaycastParams.FilterType == Enum.RaycastFilterType.Exclude then
+							table.insert(castObject.RaycastParams.FilterDescendantsInstances, result.Instance)
+						end
 					else
 						castObject.Caster.RayHit:Fire(castObject, result)
 						castObject.Active = false
 					end
-					
+
 					if castObject.Visualize then
 						VisualizeHit(P, pierced)
 					end
 				end
-				
+
 				castObject.Distance += (P-castObject.Position).Magnitude
 				if castObject.Distance >= castObject.MaxDistance then
 					castObject.Active = false
 				end
-				
+
 				if castObject.Visualize then
 					VisualizeSegment(CFrame.new(castObject.Position, P), (P-castObject.Position).Magnitude)
 				end
-				
+
 				castObject.Caster.CastUpdated:Fire(castObject, castObject.Position, (P-castObject.Position).Unit, (P-castObject.Position).Magnitude, V, castObject.Tracer)
 
 				castObject.Position = P
@@ -177,28 +181,31 @@ else
 			if castObject.Active then
 				local currentTrajectory = castObject.Trajectories[#castObject.Trajectories]
 				local currentTick = (tick()-currentTrajectory.StartTick) * castObject.SimulationSpeed
-				
+
 				local P = GetPositionAtTime(
 					currentTick,
 					currentTrajectory.Origin,
 					currentTrajectory.InitialVelocity,
 					currentTrajectory.Acceleration
 				)
-				
+
 				local V = GetVelocityAtTime(
 					currentTick,
 					currentTrajectory.InitialVelocity,
 					currentTrajectory.Acceleration
 				)
-				
+
 				local result = game.Workspace:Raycast(castObject.Position, P-castObject.Position, castObject.RaycastParams)
-				
+
 				if result then
 					local pierced = castObject.PierceFunction(castObject, result, P, V)
 					P = result.Position
-					
+
 					if pierced then
 						castObject.Caster.RayPierced:Fire(castObject, result)
+						if castObject.IgnorePiercedParts and castObject.RaycastParams.FilterType == Enum.RaycastFilterType.Exclude then
+							table.insert(castObject.RaycastParams.FilterDescendantsInstances, result.Instance)
+						end
 					else
 						castObject.Caster.RayHit:Fire(castObject, result)
 						castObject.Active = false
@@ -208,7 +215,7 @@ else
 						VisualizeHit(P, pierced)
 					end
 				end
-				
+
 				castObject.Distance += (P-castObject.Position).Magnitude
 				if castObject.Distance >= castObject.MaxDistance then
 					castObject.Active = false
@@ -217,19 +224,19 @@ else
 				if castObject.Visualize then
 					VisualizeSegment(CFrame.new(castObject.Position, P), (P-castObject.Position).Magnitude)
 				end
-				
+
 				castObject.Caster.CastUpdated:Fire(castObject, castObject.Position, (P-castObject.Position).Unit, (P-castObject.Position).Magnitude, V, castObject.Tracer)
-				
+
 				castObject.Position = P
 				castObject.Velocity = V
 			else
 				castObject.Caster.CastStopping:Fire(castObject)
-				
+
 				if castObject.PartPool ~= nil and castObject.Tracer ~= nil then
 					castObject.PartPool:ReturnPart(castObject.Tracer)
 					castObject.Tracer = nil
 				end
-				
+
 				table.remove(CASTS, i)
 			end
 		end
