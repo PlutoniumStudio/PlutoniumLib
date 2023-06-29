@@ -3,19 +3,25 @@ Main library for all Plutonium Studio roblox scripting projects.
 
 ROBLOX PAGE [HERE](https://www.roblox.com/library/13882575468/PlutoniumLib)
 
+## Version 1.1
+### Primer
+- Built in optional cast visualization added
+- Pierce function to determine whether or not a *CastInstance* may penetrate a surface
+### Composter
+- Name changed from **PartPool** to **Composter**
 
 # Documentation
 
-## <sup>module</sup> PartPool
+## <sup>module</sup> Composter
 
-PartPool intends to minimize lag with large loads of parts by means of recycling them. Unused parts are not reparented or deleted, but instead repositioned far outside rendering view to be used again.
+Composter intends to minimize lag with large loads of parts by means of recycling them. Unused parts are not reparented or deleted, but instead repositioned far outside rendering view to be used again.
 
 **Functions**
-- `PartPool.new(template : Instance, precreatedParts : number, container : Instance)` <sub>InstancePool</sub> - creates an *InstancePool* object
+- `Composter.new(template : Instance, precreatedParts : number, container : Instance)` <sub>InstancePool</sub> - creates an *InstancePool* object
 
 ### <sup>class</sup> `InstancePool`
 
-Object containing your parts and basic **PartPool** functions
+Object containing your parts and basic **Composter** functions
 
 **Properties**
 - <sup>Instance</sup> `Template` - part being replicated and used by *InstancePool*
@@ -32,15 +38,13 @@ Object containing your parts and basic **PartPool** functions
 
 **Code Example**
 ```lua
-local PartPool = require(PlutoniumLib.PartPool)
-
 local Part = Instance.new("Part")
 Part.Anchored = true
 
 local Container = Instance.new("Folder")
 Container.Parent = game.Workspace
 
-local newPool = PartPool.new(part, 100, container)
+local newPool = Composter.new(part, 100, container)
 
 while wait() do
   local newPart = newPool:GetPart()
@@ -132,7 +136,7 @@ local Caster = Primer.new()
 local PrimerData = Primer.newDataPacket()
 PrimerData.RaycastParams.FilterDescendantsInstances = {Container}
 PrimerData.Acceleration = Vector3.new(0, -196.2)
-PrimerData.TracerPool = PartPool.new(Tracer, 100, Container)
+PrimerData.TracerPool = Composter.new(Tracer, 100, Container)
 PrimerData.SimulationSpeed = 1
 
 local Camera = game.Workspace.CurrentCamera
