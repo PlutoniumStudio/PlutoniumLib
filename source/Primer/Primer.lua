@@ -33,6 +33,7 @@ function Primer.newDataPacket() : PrimerData
 		UserData = {};
 		VisualizeCasts = false;
 		IgnorePiercedParts = true;
+		Substeps = 1;
 		PierceFunction = function() return false end;
 	}
 end
