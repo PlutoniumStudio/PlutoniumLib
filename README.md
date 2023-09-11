@@ -202,7 +202,7 @@ Object carrying a DataStore and all **Loom** functions
 
 **- Substeps**
 
-Property of *PrimerData* and *CastInstance*
+Property of `PrimerData` and `CastInstance`
 
 Amount of approximated segments between each cast update. Estimated using tick, origin, and velocity; may not be accurate. Values of 3 or higher will start to look strange.
 
