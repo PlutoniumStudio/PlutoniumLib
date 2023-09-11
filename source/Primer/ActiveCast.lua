@@ -39,6 +39,7 @@ function ActiveCast.new(caster : Caster, origin, direction, velocity, primerData
 		RaycastParams = primerDataPacket.RaycastParams;
 		Visualize = primerDataPacket.VisualizeCasts;
 		IgnorePiercedParts = primerDataPacket.IgnorePiercedParts;
+		Substeps = primerDataPacket.Substeps;
 		PierceFunction = primerDataPacket.PierceFunction;
 
 
@@ -65,15 +66,15 @@ local function GetVelocityAtTime(time : number, initialVelocity : Vector3, accel
 	return initialVelocity + acceleration * time
 end
 
-local function VisualizeSegment(segmentCFrame : CFrame, segmentLength : number)
+local function VisualizeSegment(segmentCFrame : CFrame, segmentLength : number, substep: number)
 	local adornment = Instance.new("LineHandleAdornment")
 	adornment.Adornee = workspace.Terrain
 	adornment.CFrame = segmentCFrame
 	adornment.Length = segmentLength
-	adornment.Color3 = Color3.new(1)
+	adornment.Color3 = Color3.new(substep, 0, 1-substep)
 	adornment.Thickness = 5
 	adornment.Parent = workspace.Terrain
-
+	
 	game.Debris:AddItem(adornment, 60)
 end
 
@@ -113,56 +114,61 @@ if RunService:IsClient() then
 	RunService:BindToRenderStep("CAST_UPDATE", Enum.RenderPriority.Last.Value, function()
 		for i, castObject in pairs(CASTS) do
 			if castObject.Active then
-				local currentTrajectory = castObject.Trajectories[#castObject.Trajectories]
-				local currentTick = (tick()-currentTrajectory.StartTick) * castObject.SimulationSpeed
+				for i = 1, castObject.Substeps do
+					local currentTrajectory = castObject.Trajectories[#castObject.Trajectories]
+					local currentTick = (tick()-currentTrajectory.StartTick) * castObject.SimulationSpeed
+					local lastTick = (currentTrajectory.LastTick-currentTrajectory.StartTick) * castObject.SimulationSpeed
+					local substepTick = lastTick+((currentTick-lastTick)*i)/castObject.Substeps
+					
+					local P = GetPositionAtTime(
+						substepTick,
+						currentTrajectory.Origin,
+						currentTrajectory.InitialVelocity,
+						currentTrajectory.Acceleration
+					)
+					
+					local V = GetVelocityAtTime(
+						substepTick,
+						currentTrajectory.InitialVelocity,
+						currentTrajectory.Acceleration
+					)
 
-				local P = GetPositionAtTime(
-					currentTick,
-					currentTrajectory.Origin,
-					currentTrajectory.InitialVelocity,
-					currentTrajectory.Acceleration
-				)
+					local result = game.Workspace:Raycast(castObject.Position, P-castObject.Position, castObject.RaycastParams)
+					
+					if result then
+						local pierced = castObject.PierceFunction(castObject, result, P, V)
+						P = result.Position
 
-				local V = GetVelocityAtTime(
-					currentTick,
-					currentTrajectory.InitialVelocity,
-					currentTrajectory.Acceleration
-				)
-
-				local result = game.Workspace:Raycast(castObject.Position, P-castObject.Position, castObject.RaycastParams)
-				
-				if result then
-					local pierced = castObject.PierceFunction(castObject, result, P, V)
-					P = result.Position
-
-					if pierced then
-						castObject.Caster.RayPierced:Fire(castObject, result)
-						if castObject.IgnorePiercedParts and castObject.RaycastParams.FilterType == Enum.RaycastFilterType.Exclude then
-							table.insert(castObject.RaycastParams.FilterDescendantsInstances, result.Instance)
+						if pierced then
+							castObject.Caster.RayPierced:Fire(castObject, result)
+							if castObject.IgnorePiercedParts and castObject.RaycastParams.FilterType == Enum.RaycastFilterType.Exclude then
+								table.insert(castObject.RaycastParams.FilterDescendantsInstances, result.Instance)
+							end
+						else
+							castObject.Caster.RayHit:Fire(castObject, result)
+							castObject.Active = false
 						end
-					else
-						castObject.Caster.RayHit:Fire(castObject, result)
+
+						if castObject.Visualize then
+							VisualizeHit(P, pierced)
+						end
+					end
+
+					castObject.Distance += (P-castObject.Position).Magnitude
+					if castObject.Distance >= castObject.MaxDistance then
 						castObject.Active = false
 					end
 
 					if castObject.Visualize then
-						VisualizeHit(P, pierced)
+						VisualizeSegment(CFrame.new(castObject.Position, P), (P-castObject.Position).Magnitude, i/castObject.Substeps)
 					end
+
+					castObject.Caster.CastUpdated:Fire(castObject, castObject.Position, (P-castObject.Position).Unit, (P-castObject.Position).Magnitude, V, castObject.Tracer)
+
+					castObject.Position = P
+					castObject.Velocity = V
+					currentTrajectory.LastTick = tick()
 				end
-
-				castObject.Distance += (P-castObject.Position).Magnitude
-				if castObject.Distance >= castObject.MaxDistance then
-					castObject.Active = false
-				end
-
-				if castObject.Visualize then
-					VisualizeSegment(CFrame.new(castObject.Position, P), (P-castObject.Position).Magnitude)
-				end
-
-				castObject.Caster.CastUpdated:Fire(castObject, castObject.Position, (P-castObject.Position).Unit, (P-castObject.Position).Magnitude, V, castObject.Tracer)
-
-				castObject.Position = P
-				castObject.Velocity = V
 			else
 				castObject.Caster.CastStopping:Fire(castObject)
 
@@ -220,7 +226,7 @@ else
 				if castObject.Distance >= castObject.MaxDistance then
 					castObject.Active = false
 				end
-
+				
 				if castObject.Visualize then
 					VisualizeSegment(CFrame.new(castObject.Position, P), (P-castObject.Position).Magnitude)
 				end
