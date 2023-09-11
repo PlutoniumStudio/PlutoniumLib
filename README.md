@@ -202,10 +202,10 @@ Object carrying a DataStore and all **Loom** functions
 
 **- Substeps**
 
-2x simulation speed
+2x simulation speed;
 0 substeps
 ![RobloxScreenShot20230910_220932511](https://github.com/PlutoniumStudio/PlutoniumLib/assets/127816226/98b6f3a3-d93d-46f9-8a94-aca52e8c35eb)
 
-2x simulation speed
+2x simulation speed;
 2 substeps
 ![RobloxScreenShot20230910_220937895](https://github.com/PlutoniumStudio/PlutoniumLib/assets/127816226/7760d518-5072-40d7-bb4f-80f7bcc3c0f1)
