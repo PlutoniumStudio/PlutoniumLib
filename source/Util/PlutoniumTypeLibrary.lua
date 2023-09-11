@@ -23,6 +23,7 @@ export type PrimerData = {
 	UserData: {any},
 	VisualizeCasts: boolean,
 	IgnorePiercedPars: boolean,
+	Substeps : number,
 	PierceFunction: any,
 }
 
@@ -43,6 +44,7 @@ export type CastInstance = {
 	RaycastParams: RaycastParams,
 	Visualize: boolean,
 	IgnorePiercedPars: boolean,
+	Substeps: number,
 	PierceFunction: (CastInstance, RaycastResult, Vector3, Vector3) -> boolean,
 	
 	UserData: {any},
