@@ -90,6 +90,8 @@ Table of data governing projectiles casted with **Primer**
 - <sup>number</sup> `MaxDistance` - how far each *CastInstance* may go before it must be terminated
 - <sup>boolean</sup> `VisualizeCasts` - visualize the trajectory of each *CastInstance*
 - <sup>{any}</sup> `UserData` - information passed by the user to every *CastInstance*
+- <sup>number</sup> `Substeps` - segments between each update point in a *CastInstance*
+- <sup>function</sup> `PierceFunction` - function that returns a boolean value for whether or not *CastInstance* is able to pierce a surface
 
 ### <sup>class</sup> `CastInstance`
 
@@ -108,7 +110,8 @@ Object to represent a projectile.
 - <sup>InstancePool</sup> `TracerPool` - *InstancePool* being used by *CastInstance* (inherited from *PrimerData*)
 - <sup>RaycastParams</sup> `RaycastParams` - RaycastParams used by *CastInstance* (inherited from *PrimerData*)
 - <sup>boolean</sup> `Visualize` - visualize the trajectory of *CastInstance* (inherited from *PrimerData*)
-- <sup>function</sup> `PierceFunction` - function that returns a boolean value for whether or not *CastInstance* is able to pierce a surface
+- <sup>number</sup> `Substeps` - segments between each update point in *CastInstance* (inherited from *PrimerData*)
+- <sup>function</sup> `PierceFunction` - function that returns a boolean value for whether or not *CastInstance* is able to pierce a surface (inherited from *PrimerData*)
 - <sup>{any}</sup> `UserData` - user-provided information contained in *CastInstance* that can be changed and read from at any moment (inherited from *PrimerData*)
 - <sup>boolean</sup> `Active` - *CastInstance*'s current state of activity; will read false momentarily before *CastInstance* is terminated
 
