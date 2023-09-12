@@ -11,7 +11,7 @@ export type Caster = {
 	RayHit: RBXScriptSignal,
 	RayPierced: RBXScriptSignal,
 	CastStopping: RBXScriptSignal,
-	Fire: (Vector3, Vector3, number, KwikData) -> CastInstance
+	Fire: (Vector3, Vector3, number, PrimerData) -> CastInstance
 }
 
 export type PrimerData = {
@@ -22,7 +22,7 @@ export type PrimerData = {
 	MaxDistance: number,
 	UserData: {any},
 	VisualizeCasts: boolean,
-	IgnorePiercedPars: boolean,
+	IgnorePiercedParts: boolean,
 	Substeps : number,
 	PierceFunction: any,
 }
