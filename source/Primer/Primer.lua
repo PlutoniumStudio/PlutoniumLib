@@ -38,7 +38,7 @@ function Primer.newDataPacket() : PrimerData
 	}
 end
 
-function Primer:Fire(origin : Vector3, direction : Vector3, velocity : number, dataPacket : PrimerData) : KastInstance
+function Primer:Fire(origin : Vector3, direction : Vector3, velocity : number, dataPacket : PrimerData) : CastInstance
 	local newCast = ActiveCast.new(self, origin, direction, velocity, dataPacket)
 	return newCast
 end
