@@ -12,7 +12,7 @@ type CastInstance = TypeLib.CastInstance
 local Signal = require(util.Signal)
 local ActiveCast = require(script.ActiveCast)
 
-function Primer.new() : Kaster
+function Primer.new() : Caster
 	local newCaster = {
 		CastUpdated = Signal.new();
 		RayHit = Signal.new();
@@ -38,8 +38,8 @@ function Primer.newDataPacket() : PrimerData
 	}
 end
 
-function Primer:Fire(origin : Vector3, direction : Vector3, velocity : number, kwikDataPacket : KwikData) : KastInstance
-	local newCast = ActiveCast.new(self, origin, direction, velocity, kwikDataPacket)
+function Primer:Fire(origin : Vector3, direction : Vector3, velocity : number, dataPacket : PrimerData) : KastInstance
+	local newCast = ActiveCast.new(self, origin, direction, velocity, dataPacket)
 	return newCast
 end
 
